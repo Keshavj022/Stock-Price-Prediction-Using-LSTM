@@ -35,23 +35,23 @@ data = fetch_data(stock_symbol, start_date, end_date)
 st.write(f"### {stock_symbol} Stock Price Data")
 st.line_chart(data['Close'])
 
-# Preprocess the data
+# Preprocessing the data
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled_data = scaler.fit_transform(data[['Close']])
 
-# Create dataset for prediction
+# Creating dataset for prediction
 time_step = 100
 X = create_dataset(scaled_data, time_step)
 X = X.reshape(X.shape[0], X.shape[1], 1)
 
-# Load the model
+# Loading the model
 model = load_lstm_model()
 
-# Make predictions
+# Making predictions
 predictions = model.predict(X)
 predictions = scaler.inverse_transform(predictions)
 
-# Plot predictions
+# Plotting predictions
 plt.figure(figsize=(16, 8))
 plt.plot(data['Close'].values, label='Actual Stock Price')
 plt.plot(range(time_step, time_step + len(predictions)), predictions, label='Predicted Stock Price')
